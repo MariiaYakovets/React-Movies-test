@@ -19,10 +19,10 @@ function Counter() {
 			<h1>{counter}</h1>
 			<button onClick={addition}>Add 1</button>
 			<button onClick={substraction}>Substract 1</button>
-
-			<p>{error}</p>
 			<p>
-				{loading ? (
+				{error ? (
+					error
+				) : loading ? (
 					<DNA
 						visible={true}
 						height="80"
