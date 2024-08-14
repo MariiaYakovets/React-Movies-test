@@ -1,25 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-
-interface IMovie {
-	id: number;
-	title: string;
-	plot: string;
-}
+import useMovies from "../../hooks/useMovies";
 
 function Movies() {
-	let [movies, setMovies] = useState<IMovie[]>([]);
-
-	useEffect(() => {
-		async function getMovies() {
-			const response = await axios.get(
-				"https://freetestapi.com/api/v1/movies"
-			);
-			setMovies(response.data);
-		}
-		getMovies();
-	}, []);
-
+	let { movies: movies } = useMovies();
 	return (
 		<div>
 			{movies.map((value) => {

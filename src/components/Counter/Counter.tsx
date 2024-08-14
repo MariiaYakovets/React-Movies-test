@@ -1,14 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import useMovie from "../../hooks/useMovie";
+import { DNA } from "react-loader-spinner";
 
-interface IMovie {
-	id: number;
-	title: string;
-	plot: string;
-}
 function Counter() {
 	let [counter, setCounter] = useState(0);
-	let [movie, setMovie] = useState<IMovie>();
 	function addition() {
 		setCounter(counter + 1);
 	}
@@ -16,26 +12,32 @@ function Counter() {
 	function substraction() {
 		setCounter(counter - 1);
 	}
-
-	useEffect(() => {
-		async function getMovie() {
-			if (counter > 0) {
-				let response = await axios.get(
-					`https://freetestapi.com/api/v1/movies/${counter}`
-				);
-				setMovie(response.data);
-			}
-		}
-		getMovie();
-	}, [counter]);
+	let { movie: movie, error: error, loading: loading } = useMovie(counter);
 
 	return (
 		<div>
 			<h1>{counter}</h1>
 			<button onClick={addition}>Add 1</button>
 			<button onClick={substraction}>Substract 1</button>
-			<h1>{movie?.title}</h1>
-			<p>{movie?.plot}</p>
+
+			<p>{error}</p>
+			<p>
+				{loading ? (
+					<DNA
+						visible={true}
+						height="80"
+						width="80"
+						ariaLabel="dna-loading"
+						wrapperStyle={{}}
+						wrapperClass="dna-wrapper"
+					/>
+				) : (
+					<>
+						<h1>{movie ? movie.title : ""}</h1>
+						<p>{movie ? movie.plot : ""}</p>
+					</>
+				)}
+			</p>
 		</div>
 	);
 }
